@@ -1,19 +1,9 @@
 ---
-- name: Get web2py src
-  get_url: url=https://github.com/web2py/web2py/archive/{{ version }}.tar.gz
-           dest=/tmp
-  register: web2py_src
-
-- name: Untar downloaded file 
-  unarchive: src={{ web2py_src.dest }}
-             dest=/tmp
-             creates=yes
-             remote_src=yes
-  when: web2py_src|changed
-
-- name: Move web2py directory for use
-  shell: mv /tmp/web2py-{{ version }} {{ web2py_dir }}
-  when: web2py_src|changed
+- name: Clone web2py
+  git: repo=https://github.com/web2py/web2py.git
+       dest={{ web2py_dir }}
+       version={{ version }}
+       track_submodules=yes
 
 - name : Fix web2py permissions
   file: path={{ web2py_dir }}

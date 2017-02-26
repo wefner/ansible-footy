@@ -39,6 +39,10 @@
             dest={{ snippets }}
   when: letsencrypt == True
 
+- name: Disable default Virtualhost
+  file: path=/etc/nginx/sites-enabled/default
+        state=absent
+
 - name: Enable footy
   file: src=/etc/nginx/sites-available/footy.conf
         dest=/etc/nginx/sites-enabled/footy.conf
