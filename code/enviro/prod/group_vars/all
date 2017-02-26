@@ -1,0 +1,4 @@
+---
+domain_name: footy.fabreteca.com
+letsencrypt: True
+cert_path: /etc/letsencrypt/live

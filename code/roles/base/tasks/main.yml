@@ -1,0 +1,11 @@
+---
+- name: Install base software
+  apt: name={{ item }}
+       update_cache=yes
+  with_items:
+    - gcc
+    - python
+    - python-apt
+    - python-dev
+    - python-openssl
+    - python-setuptools

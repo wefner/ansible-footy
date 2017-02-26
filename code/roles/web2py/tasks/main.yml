@@ -1,0 +1,31 @@
+---
+- name: Get web2py src
+  get_url: url=https://github.com/web2py/web2py/archive/{{ version }}.tar.gz
+           dest=/tmp
+  register: web2py_src
+
+- name: Untar downloaded file 
+  unarchive: src={{ web2py_src.dest }}
+             dest=/tmp
+             creates=yes
+             remote_src=yes
+  when: web2py_src|changed
+
+- name: Move web2py directory for use
+  shell: mv /tmp/web2py-{{ version }} {{ web2py_dir }}
+  when: web2py_src|changed
+
+- name : Fix web2py permissions
+  file: path={{ web2py_dir }}
+        directory_mode=yes
+        recurse=yes
+        owner={{ owner }}
+        group={{ owner }}
+
+- name: Copy uwsgi handler
+  copy: src={{ web2py_dir }}/handlers/wsgihandler.py
+        dest={{ web2py_dir }}
+        remote_src=True
+        owner={{ owner }}
+        group={{ owner }}
+  notify: restart uwsgi

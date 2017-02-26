@@ -1,0 +1,14 @@
+---
+- name: Install software
+  apt: name=letsencrypt
+       update_cache=yes
+
+- name: Create letsencrypt tree
+  file: path={{ web_root }}/{{ challenge }}
+        state=directory
+        recursive=yes
+
+- name: Create certificates
+  shell: letsencrypt certonly --webroot -w {{ web_root }} -d {{ item }} --agree-tos
+  with_items:
+    - "{{ domain_name }}"

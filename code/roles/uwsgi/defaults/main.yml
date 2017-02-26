@@ -1,0 +1,12 @@
+---
+log_folder: /var/log/uwsgi
+socket: /tmp/web2py.socket
+processes: 4
+harakiri: 60
+reload_mercy: 8
+cpu_affinity: 1
+stats_socket: /tmp/stats.socket
+max_requests: 2000
+limit_as: 512
+reload_on_as: 256
+reload_on_rss: 192

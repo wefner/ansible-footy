@@ -1,0 +1,7 @@
+---
+web2py_dir: /opt/web2py
+app: footy
+
+log_folder: /var/log/nginx
+snippets: /etc/nginx/snippets
+cert_path: /etc/nginx/ssl

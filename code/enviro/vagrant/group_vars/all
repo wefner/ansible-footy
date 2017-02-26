@@ -1,0 +1,3 @@
+---
+domain_name: footy.vagrant.local
+letsencrypt: False

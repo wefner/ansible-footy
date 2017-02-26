@@ -1,0 +1,20 @@
+---
+- name: Install uwsgi
+  apt: name={{ item }}
+       update_cache=yes
+  with_items:
+    - uwsgi
+    - uwsgi-plugin-python
+
+- name: Copy uwsgi configurations
+  template: src={{ item.name }}
+            dest={{ item.dest }}
+  with_items:
+    - { name: footy.xml, dest: /etc/uwsgi/apps-available/ }
+    - { name: uwsgi-emperor.conf, dest: /etc/init/ }
+
+- name: Enable footy
+  file: src=/etc/uwsgi/apps-available/footy.xml
+        dest=/etc/uwsgi/apps-enabled/footy.xml
+        state=link
+  notify: restart uwsgi

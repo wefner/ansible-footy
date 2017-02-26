@@ -1,0 +1,46 @@
+---
+- name: Install software
+  apt: name=nginx
+       update_cache=yes
+
+- name: Copy Nginx and Virtualhost configuration file
+  template: src={{ item.name }}
+            dest={{ item.dest }}
+  with_items: 
+    - { name: nginx.conf, dest: /etc/nginx }
+    - { name: footy.conf, dest: /etc/nginx/sites-available }
+
+- name: Copy SSL configuration files
+  copy: src=ssl.conf
+        dest={{ snippets }}
+
+- name: Make sure required directories exist
+  file: path={{ item }} 
+        state=directory
+        recurse=yes
+  with_items:
+    - "{{ cert_path }}/{{ domain_name }}"
+    - "{{ log_folder }}/{{ app }}"
+
+- name: Generate Self signed SSL certificate
+  shell: openssl req -x509 \
+          -newkey rsa:4096 \
+          -keyout {{ cert_path }}/{{ domain_name }}/privkey.pem \
+          -out {{ cert_path }}/{{ domain_name }}/fullchain.pem \
+          -days 365 \
+          -nodes \
+          -subj "/C=NL/ST=Noord-Holland/L=Amsterdam/O=Company/OU=Org/CN={{ domain_name }}"
+  register: ssl_certificate
+  when: letsencrypt == False
+  notify: restart nginx
+
+- name: Copy letsencrypt configuration
+  template: src=letsencrypt.conf
+            dest={{ snippets }}
+  when: letsencrypt == True
+
+- name: Enable footy
+  file: src=/etc/nginx/sites-available/footy.conf
+        dest=/etc/nginx/sites-enabled/footy.conf
+        state=link
+  notify: restart nginx

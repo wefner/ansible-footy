@@ -1,0 +1,20 @@
+<uwsgi>
+    <socket>{{ socket }}</socket>
+    <pythonpath>{{ web2py_dir }}</pythonpath>
+    <pythonpath>{{ web2py_dir }}_env</pythonpath>
+    <venv>{{ web2py_dir }}_env</venv>
+    <mount>/=wsgihandler:application</mount>
+    <master/>
+    <processes>{{ processes }}</processes>
+    <harakiri>{{ harakiri }}</harakiri>
+    <reload-mercy>{{ reload_mercy }} </reload-mercy>
+    <cpu-affinity>{{ cpu_affinity }}</cpu-affinity>
+    <stats>{{ stats_socket }}</stats>
+    <max-requests>{{ max_requests }}</max-requests>
+    <limit-as>{{ limit_as }}</limit-as>
+    <reload-on-as>{{ reload_on_as }}</reload-on-as>
+    <reload-on-rss>{{ reload_on_rss }}</reload-on-rss>
+    <uid>{{ owner }}</uid>
+    <gid>{{ owner }}</gid>
+    <no-orphans/>
+</uwsgi>
