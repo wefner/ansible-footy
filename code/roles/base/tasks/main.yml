@@ -8,4 +8,7 @@
     - python-apt
     - python-dev
     - python-openssl
+    - python-virtualenv
     - python-setuptools
+    - unzip
+    - sqlite

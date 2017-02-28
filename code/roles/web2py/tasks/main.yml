@@ -1,21 +1,39 @@
 ---
-- name: Clone web2py
-  git: repo=https://github.com/web2py/web2py.git
-       dest={{ web2py_dir }}
-       version={{ version }}
-       track_submodules=yes
+- name: Get web2py
+  get_url: url=http://www.web2py.com/examples/static/{{ version }}/web2py_src.zip
+           dest=/tmp
 
-- name : Fix web2py permissions
-  file: path={{ web2py_dir }}
-        directory_mode=yes
-        recurse=yes
-        owner={{ owner }}
-        group={{ owner }}
+- name: Unzip web2py
+  unarchive: src=/tmp/web2py_src.zip
+             dest=/opt
+             remote_src=True
 
 - name: Copy uwsgi handler
   copy: src={{ web2py_dir }}/handlers/wsgihandler.py
         dest={{ web2py_dir }}
         remote_src=True
+        owner={{ owner }}
+        group={{ owner }}
+
+- name: Get web2py footy application
+  git: repo=https://github.com/wefner/w2pfooty.git
+       dest={{ web2py_dir }}/applications/w2pfooty
+
+- name: Set footy application as default
+  file: src={{ web2py_dir }}/applications/w2pfooty
+        dest={{ web2py_dir }}/applications/init
+        state=link
+
+- name: Set admin password for 443 port
+  shell: python -c "from gluon.main import save_password; save_password('{{ password }}', 443)"
+  args: 
+    chdir: "{{ web2py_dir }}"
+  no_log: True
+
+- name : Fix web2py permissions
+  file: path={{ web2py_dir }}
+        directory_mode=yes
+        recurse=yes
         owner={{ owner }}
         group={{ owner }}
   notify: restart uwsgi

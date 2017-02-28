@@ -1,3 +1,4 @@
 ---
 domain_name: footy.vagrant.local
 letsencrypt: False
+password: 1234
