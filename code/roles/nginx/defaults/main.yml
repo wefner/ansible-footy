@@ -1,6 +1,6 @@
 ---
 web2py_dir: /opt/web2py
-app: footy
+app: w2pfooty
 
 log_folder: /var/log/nginx
 snippets: /etc/nginx/snippets

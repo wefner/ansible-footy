@@ -1,0 +1,7 @@
+---
+- name: restart supervisor
+  shell: supervisorctl restart {{ app }}
+
+- name: restart supervisor
+  service: name=supervisor enabled=yes state=restarted
+  
