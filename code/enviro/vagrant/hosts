@@ -1,2 +1,11 @@
-[all]
+[all:children]
+footy
+
+[db:children]
+footy
+
+[db:vars]
+postgres_enabled=True
+
+[footy]
 127.0.0.1 ansible_port=2202 ansible_user=vagrant ansible_ssh_private_key_file=../.vagrant/machines/default/virtualbox/private_key

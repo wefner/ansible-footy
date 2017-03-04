@@ -4,11 +4,28 @@
   become_method: sudo
   become_user: root
   gather_facts: no
+  roles:
+    - base
+
+- hosts: db
+  become: True
+  become_method: sudo
+  become_user: root
+  gather_facts: no
+  vars:
+    app: w2pfooty
+  roles:
+    - { role: postgres, when: postgres_enabled == True }
+
+- hosts: footy
+  become: True
+  become_method: sudo
+  become_user: root
+  gather_facts: no
   vars:
     web2py_dir: /opt/web2py
     owner: www-data
   roles:
-    - base
     - nginx
     - { role: letsencrypt, when: letsencrypt == True }
     - virtualenv

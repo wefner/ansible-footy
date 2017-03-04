@@ -4,7 +4,11 @@
        update_cache=yes
   notify: restart supervisor
 
+- name: Create log folder for app
+  file: path={{ log_folder }}
+        state=directory
+
 - name: Copy scheduler
   template: src=scheduler.conf
             dest=/etc/supervisor/conf.d/
-  notify: restart supervisor
+  notify: restart supervisorctl
