@@ -17,18 +17,25 @@
 
 - name: Get web2py footy application
   git: repo=https://github.com/wefner/w2pfooty.git
-       dest={{ web2py_dir }}/applications/w2pfooty
+       dest={{ web2py_dir }}/applications/{{ app }}
+       force=yes
 
 - name: Set footy application as default
-  file: src={{ web2py_dir }}/applications/w2pfooty
+  file: src={{ web2py_dir }}/applications/{{ app }}
         dest={{ web2py_dir }}/applications/init
         state=link
 
 - name: Set admin password for 443 port
-  shell: python -c "from gluon.main import save_password; save_password('{{ password }}', 443)"
+  shell: python -c "from gluon.main import save_password; save_password('{{ w2p_password }}', 443)"
   args: 
     chdir: "{{ web2py_dir }}"
   no_log: True
+
+- name: Replace APP configuration
+  template: src=appconfig.ini
+            dest={{ web2py_dir }}/applications/{{ app }}/private/
+            owner={{ owner }}
+            group={{ owner }}
 
 - name : Fix web2py permissions
   file: path={{ web2py_dir }}

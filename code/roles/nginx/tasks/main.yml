@@ -15,6 +15,7 @@
 - name: Copy Nginx and Virtualhost configuration file
   template: src={{ item.name }}
             dest={{ item.dest }}
+            backup=yes
   with_items: 
     - { name: nginx.conf, dest: /etc/nginx }
     - { name: footy.conf, dest: /etc/nginx/sites-available }

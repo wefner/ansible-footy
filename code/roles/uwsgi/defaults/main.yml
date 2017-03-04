@@ -10,3 +10,6 @@ max_requests: 2000
 limit_as: 512
 reload_on_as: 256
 reload_on_rss: 192
+thunder_lock: true
+enable_threads: true
+postgres_enabled: False

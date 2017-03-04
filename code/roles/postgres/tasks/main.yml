@@ -1,0 +1,39 @@
+---
+- name: Install PostgreSQL
+  apt: name={{ item }}
+       update_cache=yes
+  with_items:
+   - postgresql
+   - postgresql-contrib
+   - python-psycopg2
+   - libpq-dev
+
+- name: Get pg_hba.conf file
+  find: path=/etc/postgresql
+        recurse=yes
+        patterns="pg_hba.conf"
+  register: pg_config
+
+- name: Change authentication method
+  replace: dest={{ pg_config.files[0].path }}
+           regexp='local[^\n]+all[^\n]+all[^\n]+peer'
+           replace='local all all md5'
+  notify: restart postgres
+
+- name: Create DB
+  become: yes
+  become_method: sudo
+  become_user: postgres
+  postgresql_db: name={{ app }}
+
+- name: Create DB role
+  become: yes
+  become_method: sudo
+  become_user: postgres
+  postgresql_user: db={{ app }}
+                   name=u_{{ app }}
+                   password={{ postgres.password }}
+                   role_attr_flags=CREATEDB,NOSUPERUSER
+                   priv=ALL
+  notify: restart postgres
+

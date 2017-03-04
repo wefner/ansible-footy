@@ -1,4 +1,11 @@
 ---
 domain_name: footy.vagrant.local
 letsencrypt: False
-password: 1234
+w2p_password: 1234
+app: &app w2pfooty
+postgres:
+  password: changeme
+  port: 5432
+  hostname: localhost
+  database: *app
+  username: u_w2pfooty

@@ -3,8 +3,12 @@
     <pythonpath>{{ web2py_dir }}</pythonpath>
     <pythonpath>{{ web2py_dir }}_env</pythonpath>
     <venv>{{ web2py_dir }}_env</venv>
+    {% if postgres_enabled == True %}
+    <env>POSTGRES_ENABLED=True</env>
+    {% endif %}
+    <enable-threads>{{ enable_threads }}</enable-threads>
+    <thunder-lock>{{ thunder_lock }}</thunder-lock>
     <mount>/=wsgihandler:application</mount>
-    <master/>
     <processes>{{ processes }}</processes>
     <harakiri>{{ harakiri }}</harakiri>
     <reload-mercy>{{ reload_mercy }} </reload-mercy>
