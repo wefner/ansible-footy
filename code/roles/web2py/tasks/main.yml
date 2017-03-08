@@ -18,6 +18,7 @@
 - name: Get web2py footy application
   git: repo=https://github.com/wefner/w2pfooty.git
        dest={{ web2py_dir }}/applications/{{ app }}
+       version={{ w2pfooty_version }}
        force=yes
 
 - name: Set footy application as default
@@ -36,6 +37,7 @@
             dest={{ web2py_dir }}/applications/{{ app }}/private/
             owner={{ owner }}
             group={{ owner }}
+  notify: start services
 
 - name : Fix web2py permissions
   file: path={{ web2py_dir }}
@@ -43,4 +45,3 @@
         recurse=yes
         owner={{ owner }}
         group={{ owner }}
-  notify: restart uwsgi

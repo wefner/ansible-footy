@@ -13,3 +13,5 @@ reload_on_rss: 192
 thunder_lock: true
 enable_threads: true
 postgres_enabled: False
+no_orphans: True
+plugin: python

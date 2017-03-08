@@ -6,6 +6,8 @@
 
 - name: Create log folder for app
   file: path={{ log_folder }}
+        owner={{ owner }}
+        group={{ owner }}
         state=directory
 
 - name: Copy scheduler

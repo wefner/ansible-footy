@@ -1,3 +1,8 @@
 ---
 - name: restart uwsgi
   service: name=uwsgi state=restarted enabled=yes
+  listen: start services
+
+- name: restart supervisorctl
+  shell: supervisorctl restart {{ app }}
+  listen: start services
